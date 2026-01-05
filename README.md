@@ -645,12 +645,10 @@ O Salto Consciente, o título deste epílogo, é a culminação de nossa jornada
 * **Termo de Tensão do Pulso (Inércia do Agora) nas Equações de Campo de Einstein:**
     $$G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4}(T_{\mu\nu} + \sigma_\Pi)$$
     Onde $\sigma_\Pi \propto \frac{\partial S}{\partial \Psi}$ representa a resistência do momento quântico original do Pulso ao seu esticamento temporal.
+
+  
 # Relatório Técnico: Teste de Hipótese - Pulso Primordial (Correção $\rho^2/\rho_P$)
 
-**Data:** 04/01/2026
-**Assunto:** Análise preliminar da modificação do termo de densidade e roteiro de validação observacional.
-
----
 
 ## 1. Resumo Executivo
 
@@ -734,4 +732,110 @@ Para execução em ambiente computacional local:
 3.  **Integração:** Alimentar o CLASS com o espectro gerado.
 4.  **Análise:** Usar Cobaya (ou grid search simplificado) para encontrar os limites de exclusão dos parâmetros $\rho_P$ e $N_{\rm pre}$.
 
+# Guia de Implementação e Análise: Pulso Primordial (Correção $\rho^2/\rho_P$)
+
+## 1. Priors e Parâmetros para Exploração (MCMC)
+
+Para a análise Bayesiana (Cobaya), sugerem-se os seguintes intervalos de *priors*:
+
+* **`log10_rhoP`**: Razão logarítmica da densidade crítica do termo $\rho_\Pi$ em relação a $\rho_0$.
+    * *Prior:* `[-5, 2]` (Amplo; ajustar conforme o significado físico desejado).
+* **`N_pre`**: Número de *e-folds* entre o *bounce* e o início da geração dos modos observáveis.
+    * *Prior:* `[0, 300]`
+    * *Nota:* Modelos de LQC sugerem que valores grandes ($\ge 100$) diluem os efeitos observáveis, tornando o modelo indistinguível do $\Lambda$CDM.
+* **Parâmetros Cosmológicos Padrão**:
+    * Usar *priors* amplos compatíveis com os resultados do Planck para $\{h, \omega_b, \omega_c, \tau, n_s, A_s\}$.
+
+---
+
+## 2. Notas de Performance e Detalhes Técnicos
+
+1.  **Custo Computacional:** Rodar um MCMC com a *likelihood* do Planck exige recursos significativos (horas a dias). A paralelização via Cobaya é essencial (MPI/OpenMP).
+2.  **Rigor nas Perturbações:** A implementação deve incluir as flutuações intrínsecas do termo $\rho_\Pi$. Tratá-lo apenas como uma modificação de fundo (*background*) é uma aproximação de primeira ordem. Para resultados robustos, $\delta\rho_\Pi$ deve ser incluído nas equações de Mukhanov-Sasaki (ver secção 4).
+3.  **Resolução do Grid:** Utilizar grids finos de $k$, cobrindo pelo menos de $k \sim 10^{-5}$ a $1 \text{ Mpc}^{-1}$.
+4.  **Unidades Físicas:** O *pipeline* atual utiliza unidades adimensionais internas. É crucial definir o mapeamento para $\text{Mpc}^{-1}$ antes de injetar os dados no CLASS. Recomenda-se converter $\rho_P$ para SI ($\text{kg/m}^3$) para associar à escala de Hubble real.
+
+---
+
+## 3. Roteiro de Execução
+
+### A) Preparação do Código
+* **Ajustar `compute_primordial.py`:** Incluir um *inflaton* explícito e calcular o parâmetro de *slow-roll* $\epsilon(t)$ dinamicamente para melhorar a precisão da variável $z$.
+* **Mapeamento de Unidades:** Modificar a saída `primordial_pk.txt` para unidades compatíveis com o CLASS ($\text{Mpc}^{-1}$).
+    * *Ajuste Prático:* Escolher um fator $\alpha$ tal que $k_{\text{Mpc}} = \alpha \times k_{\text{internal}}$.
+    * *Exemplo:* Se o pivot interno é $10^{-2}$ e o físico é $0.05 \text{ Mpc}^{-1}$, então $\alpha = 5$.
+
+### B) Integração com CLASS e Cobaya
+1.  **Copiar Ficheiros:** Mover `primordial_pk_example_scaled.txt` para o ambiente com CLASS/Cobaya.
+2.  **Configurar CLASS:** Apontar o `class_input.ini` para o ficheiro de espectro reescalado usando o parâmetro `external_pk_filename`.
+3.  **Executar CLASS:** Gerar os $C_\ell$ (`class class_input.ini`) para validação visual.
+4.  **Executar Cobaya:** Rodar as cadeias (`cobaya-run cobaya_pulso.yaml`) após configurar os caminhos para as *likelihoods* do Planck.
+
+---
+
+## 4. Derivação Teórica das Perturbações (Formalismo)
+
+Para incluir a física correta do *bounce*, devemos perturbar o termo de correção. Assumimos a linearização em torno do fundo até à primeira ordem.
+
+### Definição do Termo
+A correção na densidade é dada por:
+$$\rho_\Pi(\rho) = -\frac{\rho^2}{\rho_P}$$
+
+### 4.1. Variações de Densidade ($\delta\rho_\Pi$)
+Linearizando para pequenas variações $\delta\rho$:
+$$\delta\rho_\Pi = \frac{d\rho_\Pi}{d\rho}\,\delta\rho = -\frac{2\rho}{\rho_P}\,\delta\rho$$
+
+### 4.2. Variações de Pressão ($\delta p_\Pi$)
+A pressão efetiva $p_\Pi$ é obtida exigindo a conservação do tensor energia-momento a nível de fundo ($\dot{\rho}_{\text{eff}} + 3H(\rho_{\text{eff}} + p_{\text{eff}}) = 0$).
+
+A relação derivada para a pressão de fundo é:
+$$p_\Pi = -\frac{\rho}{\rho_P}(\rho + 2p)$$
+
+Linearizando $p_\Pi$ (variação de primeira ordem):
+$$\delta p_\Pi = -\frac{2}{\rho_P}\Big[(\rho + p)\,\delta\rho + \rho\,\delta p\Big]$$
+
+### 4.3. Velocidade do Som Efetiva ($c_{s,\text{eff}}^2$)
+As quantidades totais (efetivas) são definidas como:
+$$\rho_{\text{eff}} = \rho + \rho_\Pi, \quad p_{\text{eff}} = p + p_\Pi$$
+
+A velocidade do som efetiva física é dada por $c_{s,\text{eff}}^2 \equiv \frac{\delta p_{\text{eff}}}{\delta\rho_{\text{eff}}}$.
+
+Substituindo as variações lineares e assumindo que para o fluido original $\delta p = c_s^2 \delta\rho$:
+
+1.  **Densidade Efetiva Perturbada:**
+    $$\delta\rho_{\text{eff}} = \left(1 - \frac{2\rho}{\rho_P}\right)\delta\rho$$
+
+2.  **Pressão Efetiva Perturbada:**
+    $$\delta p_{\text{eff}} = \left(c_s^2 - \frac{2(\rho+p)}{\rho_P} - \frac{2\rho}{\rho_P}c_s^2\right)\delta\rho$$
+
+3.  **Resultado Final para $c_{s,\text{eff}}^2$:**
+    $$c_{s,\text{eff}}^2 = \frac{c_s^2 - \frac{2(\rho+p)}{\rho_P} - \frac{2\rho}{\rho_P} c_s^2} {1 - \frac{2\rho}{\rho_P}}$$
+
+> **Nota Crítica:** O termo $\rho_\Pi$ altera a velocidade do som efetiva. Se $c_{s,\text{eff}}^2 < 0$, indica instabilidade de Jeans e crescimento exponencial dos modos, o que deve ser monitorizado numericamente.
+
+---
+
+## 5. Implementação Numérica (Modificação do Código)
+
+Para implementar estas derivações no `compute_primordial.py`, o cálculo da variável $z(\eta)$ e da equação de Mukhanov-Sasaki deve ser alterado da seguinte forma:
+
+### Passo 1: Arrays de Fundo Efetivos
+Calcular para cada passo de tempo $\eta$:
+* $\rho_{\text{eff}} = \rho - \frac{\rho^2}{\rho_P}$
+* $p_{\text{eff}} = p - \frac{\rho}{\rho_P}(\rho + 2p)$
+* $\epsilon_{\text{eff}} = \frac{\rho_{\text{eff}} + p_{\text{eff}}}{\rho_{\text{eff}}}$ (ou via $-\dot{H}/H^2$)
+
+### Passo 2: Variável $z$ Modificada
+Calcular $z$ usando o $\epsilon_{\text{eff}}$ derivado do *bounce*:
+$$z(\eta) = a(\eta)\sqrt{2\epsilon_{\text{eff}}(\eta)}$$
+Calcular a derivada $z''/z$ numericamente a partir deste novo array.
+
+### Passo 3: Velocidade do Som Dinâmica
+Calcular o array $c_{s,\text{eff}}^2(\eta)$ usando a fórmula fechada derivada na Secção 4.3.
+
+### Passo 4: Integração de Mukhanov-Sasaki
+Integrar para cada modo $k$:
+$$v_k'' + \left(c_{s,\text{eff}}^2(\eta) k^2 - \frac{z''}{z}\right)v_k = 0$$
+
+Esta abordagem incorpora consistentemente a física do *bounce* nas perturbações lineares, permitindo uma comparação robusta com os dados do Planck.
 
