@@ -1,0 +1,1 @@
+streamlit run "Simulador de Perturbacoes Primordiais em LQC.py"
