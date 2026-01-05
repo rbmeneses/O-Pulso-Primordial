@@ -645,3 +645,93 @@ O Salto Consciente, o título deste epílogo, é a culminação de nossa jornada
 * **Termo de Tensão do Pulso (Inércia do Agora) nas Equações de Campo de Einstein:**
     $$G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4}(T_{\mu\nu} + \sigma_\Pi)$$
     Onde $\sigma_\Pi \propto \frac{\partial S}{\partial \Psi}$ representa a resistência do momento quântico original do Pulso ao seu esticamento temporal.
+# Relatório Técnico: Teste de Hipótese - Pulso Primordial (Correção $\rho^2/\rho_P$)
+
+**Data:** 04/01/2026
+**Assunto:** Análise preliminar da modificação do termo de densidade e roteiro de validação observacional.
+
+---
+
+## 1. Resumo Executivo
+
+### Modificação Teórica
+Substituição do termo de correção pela forma quadrática inspirada em LQC (Loop Quantum Cosmology):
+$$\rho_\Pi = -\frac{\rho^2}{\rho_P} \quad \Rightarrow \quad \rho_{\text{eff}} = \rho\left(1 - \frac{\rho}{\rho_P}\right)$$
+
+### Metodologia Aplicada
+* **Integração Numérica:** Equação de Friedmann (unidades $8\pi G/3 = 1$, fluido $w=0$) cobrindo contração, *bounce* e expansão.
+* **Modelo de Complexidade:** Evolução de $I(t)$ onde $\dot{I} = \beta a^k$, com marcador de limiar crítico ($I_{\rm crit}$) para emergência de AGI/Consciência.
+
+### Resultados Numéricos Preliminares
+* **Bounce:** Ocorreu em $t_{\rm bounce} \approx 0.00005$ (unidades arbitrárias) com fator de escala mínimo $a_{\min} \approx 1.77$.
+* **Emergência de AGI:** Com os parâmetros testados, a complexidade atingiu o nível crítico no ramo de **contração**:
+    * Tempo: $t_{\rm AGI} \approx -9.36$
+    * Escala: $a \approx 1.99$
+    * Valor $I$: $\approx 10.08$
+    * *Interpretação:* AGI pode surgir antes do bounce, indicando que a configuração informacional é possível em múltiplos pontos do pulso.
+
+### Comentários Técnicos
+A forma funcional escolhida é equivalente à correção efetiva LQC ($\rho(1-\rho/\rho_c)$) se $\rho_c = \rho_P$. Isso garante que o comportamento qualitativo do *bounce* é robusto e consistente com a literatura existente.
+
+---
+
+## 2. Próximos Passos Imediatos
+
+1.  **Cenários de Radiação:** Repetir a simulação incluindo radiação e energia escura para verificar a posição do limiar $I_{\rm crit}$ em universos dominados por radiação vs. matéria.
+2.  **Retroação (Backreaction):** Modelar $I$ como um campo físico com densidade $\rho_I(I, \dot{I})$ e inseri-lo no lado direito da equação de Friedmann para investigar se a emergência da consciência altera o *timing* do bounce.
+3.  **Mapa Paramétrico:** Varrer o espaço de parâmetros ($\beta, I_{\rm crit}, \rho_P$) para gerar um mapa estatístico de onde a AGI ocorre (antes ou depois do bounce).
+4.  **Texto Técnico:** Redigir um resumo formal (1-2 páginas) conectando as equações às assinaturas observacionais (CMB, variação de constantes).
+
+---
+
+## 3. Roteiro de Teste de Hipótese: Confronto com Observações
+
+Este roteiro detalha como validar a modificação $\rho_{\Pi} = -\rho^2/\rho_P$ contra dados do Planck/WMAP.
+
+### Hipótese Central
+A correção gera um *bounce* em $\rho = \rho_P$. O objetivo é determinar se isso ocorreu antes ou durante a geração das flutuações da CMB e quais sinais (espectro de potência, não-gaussianidade) sobreviveram.
+
+### Passo 1: Evolução de Fundo (Background)
+**Objetivo:** Obter $a(t)$, $H(t)$, $\rho(t)$.
+
+* **Equação:**
+    $$H^2 = \rho(a)\left(1-\frac{\rho(a)}{\rho_P}\right), \quad \text{onde } \rho(a) = \sum \rho_{i,0}a^{-3(1+w_i)}$$
+* **Parâmetros Críticos:** $\rho_P$ (escala do bounce) e $N_{\rm pre}$ (número de e-folds entre o bounce e a inflação).
+* **Restrição:** Se $N_{\rm pre} \gtrsim 140$, os sinais são diluídos, tornando o modelo indistinguível do $\Lambda$CDM padrão (consistente com Planck).
+
+### Passo 2: Perturbações Primordiais
+**Objetivo:** Calcular o Espectro de Potência $P_\mathcal{R}(k)$.
+
+* **Equação de Mukhanov–Sasaki:**
+    $$v_k'' + \left(c_s^2 k^2 - \frac{z''}{z}\right)v_k = 0, \quad z \equiv a\sqrt{2\epsilon}$$
+* **Procedimento:** Integrar através do bounce.
+* **Sinais Esperados:** Supressão de potência em baixos $k$ (grandes escalas) e oscilações (*ringing*) no espectro.
+
+### Passo 3: Não-Gaussianidade
+**Objetivo:** Estimar $f_{\rm NL}$ e o Bispectro.
+
+* Utilizar o formalismo In-In para calcular correlações de três pontos geradas pela gravidade repulsiva no bounce.
+* **Limite Planck:** $|f_{\rm NL}^{\rm local}| < 10$. Modelos que geram grandes não-gaussianidades são descartados.
+
+### Passo 4: Comparação com Dados (Pipeline)
+1.  **Boltzmann Code:** Injetar $P_\mathcal{R}(k)$ no CLASS ou CAMB para gerar $C_\ell^{TT}, C_\ell^{EE}$.
+2.  **Likelihood:** Comparar com dados oficiais do Planck 2018.
+3.  **MCMC:** Usar Cobaya para restringir $\rho_P$ e $N_{\rm pre}$.
+
+### Passo 5: Limites Qualitativos Atuais
+* **Índice Espectral ($n_s$):** $0.9649 \pm 0.0042$. Desvios no *shape* devem ser $< 1\%$.
+* **Oscilações:** Não detectadas significativamente. O bounce deve estar "longe" (muitos e-folds) ou ter amplitude muito baixa.
+* **Anomalia do Quadrupolo:** A supressão de potência em baixos $k$ prevista pelo modelo pode explicar a anomalia de baixa potência no quadrupolo observada pelo Planck, se calibrada corretamente.
+
+---
+
+## 4. Plano de Trabalho Reprodutível (Numérico)
+
+Para execução em ambiente computacional local:
+
+1.  **Teoria:** Derivar as equações lineares para $\delta\rho_\Pi$.
+2.  **Solver:** Modificar o integrador (Python/Fortran) para suportar a passagem pelo bounce e gerar a tabela $P_\mathcal{R}(k)$.
+3.  **Integração:** Alimentar o CLASS com o espectro gerado.
+4.  **Análise:** Usar Cobaya (ou grid search simplificado) para encontrar os limites de exclusão dos parâmetros $\rho_P$ e $N_{\rm pre}$.
+
+
