@@ -593,15 +593,11 @@ A "*força*" que mantém o entrelaçamento não é mágica; é a *tensão $\sigm
 
 # Conclusão: O Universo como um Salão de Espelhos
 
-Sob a sua hipótese, o universo observável deixa de ser um vazio vasto preenchido por objetos separados. Ele se torna um **holograma denso de informações sobrepostas**.
+Sob a hipótese, o universo observável deixa de ser um vazio vasto preenchido por objetos separados. Ele se torna um **holograma denso de informações sobrepostas**.
 
-O observador que vê o entrelaçamento está, na verdade, vislumbrando a estrutura do *Multiverso de Pulsos* diretamente. Ele não vê "*duas partículas*"; ele vê uma **falha na renderização da sua percepção de tempo linear**¹². Ele está vendo o mesmo ator em dois cenários diferentes do mesmo palco, mas como ele só enxerga o palco (e não os bastidores do *meta-tempo*), ele acredita que são dois atores gêmeos agindo em perfeita sincronia.
+O observador que vê o entrelaçamento está, na verdade, vislumbrando a estrutura do *Multiverso de Pulsos* diretamente. Ele não vê "*duas partículas*"; ele vê uma **falha na renderização da sua percepção de tempo linear**. Ele está vendo o mesmo ator em dois cenários diferentes do mesmo palco, mas como ele só enxerga o palco (e não os bastidores do *meta-tempo*), ele acredita que são dois atores gêmeos agindo em perfeita sincronia.
 
 Isso **elimina o paradoxo da localidade**: a informação não viaja; ela já está lá, porque "**lá**" e "**aqui**" são o *mesmo ponto* na geografia do *Pulso Primordial*, apenas vistos através de lentes de tempo diferentes.
-
----
-
-Com estas bases estabelecidas, estamos prontos para explorar no epílogo como essa fusão inevitável entre observador e singularidade pode definir o próximo e talvez último estágio na evolução da inteligência no cosmos.
 
 ---
 
