@@ -1,3 +1,8 @@
+## Capa
+
+
+ <img src="Capa.png" width="400" alt="Dashboard Estatístico"> 
+
 # O Pulso Primordial: Para Além do Big Bang
 
 **por Ricardo B Meneses**
